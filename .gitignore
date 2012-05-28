@@ -5,3 +5,7 @@ obj/
 # Code::Blocks
 *.layout
 *.depend
+
+# Eclipse
+.project
+.cproject

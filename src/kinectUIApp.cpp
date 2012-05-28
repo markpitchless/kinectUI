@@ -65,6 +65,7 @@ void kinectUIApp::setupUIKinect() {
     ui_kinect->addWidgetDown(new ofxUILabel("Kinect", OFX_UI_FONT_LARGE));
 
     ui_kinect->addWidgetDown(new ofxUISlider(304, 16, -30, 30, angle, "Tilt"));
+	ui_kinect->addWidgetDown(new ofxUIRangeSlider(304, 16, 0.0, 255.0, nearThreshold, farThreshold, "Threshold"));
     ui_kinect->addWidgetDown(new ofxUIToggle(32, 32, false, "Bar"));
 
     ui_kinect->addWidgetDown(new ofxUIImage(304, 304, (ofImage*)&colorImg, "colorImg"));
@@ -82,6 +83,20 @@ void kinectUIApp::setKinectAngle(int n_angle) {
     if (n_angle<-30) n_angle=-30;
     angle = n_angle;
     kinect.setCameraTiltAngle(angle);
+}
+
+void kinectUIApp::setNearThreshold(int n) {
+    cout << "near: " << n << endl;
+    if (n>255) n=255;
+    if (n<0)   n=0;
+    nearThreshold = n;
+}
+
+void kinectUIApp::setFarThreshold(int n) {
+    cout << "far: " << n << endl;
+    if (n>255) n=255;
+    if (n<0)   n=0;
+    farThreshold = n;
 }
 
 
@@ -142,6 +157,11 @@ void kinectUIApp::guiEvent(ofxUIEventArgs& ev) {
     else if (ev.widget->getName() == "Tilt") {
         ofxUISlider* slider = (ofxUISlider*) ev.widget;
         setKinectAngle(slider->getScaledValue());
+    }
+    else if (ev.widget->getName() == "Threshold") {
+        ofxUIRangeSlider* slider = (ofxUIRangeSlider*) ev.widget;
+        setFarThreshold(slider->getScaledValueLow());
+        setNearThreshold(slider->getScaledValueHigh());
     }
 }
 

@@ -42,7 +42,7 @@ void kinectUIApp::setupKinect() {
 
 void kinectUIApp::setupUIApp() {
     float max_fps = 1000;
-    ui_app = new ofxUICanvas(0,0,320,320);
+    ui_app = new ofxUICanvas(10,10,320,320);
     ui_app->addWidgetDown(new ofxUILabel("KinectUI", OFX_UI_FONT_LARGE));
 
     ui_app->addWidgetDown(new ofxUIFPSSlider(304, 16, 0.0, max_fps, 0, "FPS"));
@@ -61,17 +61,17 @@ void kinectUIApp::setupUIApp() {
 }
 
 void kinectUIApp::setupUIKinect() {
-    ui_kinect = new ofxUICanvas(326,0,320,320);
+    ui_kinect = new ofxUICanvas(10+320+10,10,320,320);
     ui_kinect->addWidgetDown(new ofxUILabel("Kinect", OFX_UI_FONT_LARGE));
 
     ui_kinect->addWidgetDown(new ofxUISlider(304, 16, -30, 30, angle, "Tilt"));
 	ui_kinect->addWidgetDown(new ofxUIRangeSlider(304, 16, 0.0, 255.0, nearThreshold, farThreshold, "Threshold"));
     ui_kinect->addWidgetDown(new ofxUIToggle(32, 32, false, "Bar"));
 
-    ui_kinect->addWidgetDown(new ofxUIImage(304, 304, (ofImage*)&colorImg, "colorImg"));
-    ui_kinect->addWidgetDown(new ofxUIImage(304, 304, (ofImage*)&grayImage, "grayImage"));
+    ui_kinect->addWidgetDown(new ofxUIImage(320, 240, (ofImage*)&colorImg, "colorImg"));
+    ui_kinect->addWidgetDown(new ofxUIImage(320, 240, (ofImage*)&grayImage, "grayImage"));
 
-
+    ui_kinect->autoSizeToFitWidgets();
     ofAddListener(ui_kinect->newGUIEvent, this, &kinectUIApp::guiEvent);
     ui_kinect->loadSettings("GUI/guiSettingsKinect.xml");
 }

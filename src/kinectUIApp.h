@@ -38,9 +38,9 @@ class kinectUIApp : public ofBaseApp {
         void setFarThreshold( int n);
         ofxKinect kinect;
         ofxCvColorImage colorImg;
-        ofxCvGrayscaleImage grayImage; // grayscale depth image
+        ofxCvGrayscaleImage grayImage;      // grayscale depth image
         ofxCvGrayscaleImage grayThreshNear; // the near thresholded image
-        ofxCvGrayscaleImage grayThreshFar; // the far thresholded image
+        ofxCvGrayscaleImage grayThreshFar;  // the far thresholded image
         ofxCvContourFinder contourFinder;
         bool bThreshWithOpenCV;
         bool bDrawPointCloud;

@@ -1,0 +1,7 @@
+obj/
+*.d
+*.o
+
+# Code::Blocks
+*.layout
+*.depend

@@ -4,6 +4,7 @@
 void kinectUIApp::setup(){
     gui = new ofxUICanvas(0,0,320,320);
     gui->addWidgetDown(new ofxUILabel("OFXUI TUTORIAL", OFX_UI_FONT_LARGE));
+    gui->addWidgetDown(new ofxUIFPSSlider(304, 16, 0.0, 1000.0 , 0, "FPS"));
     gui->addWidgetDown(new ofxUISlider(304,16,0.0,255.0,100.0,"BACKGROUND VALUE"));
     gui->addWidgetDown(new ofxUIToggle(32, 32, false, "FULLSCREEN"));
     ofAddListener(gui->newGUIEvent, this, &kinectUIApp::guiEvent);

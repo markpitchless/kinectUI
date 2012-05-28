@@ -67,6 +67,10 @@ void kinectUIApp::setupUIKinect() {
     ui_kinect->addWidgetDown(new ofxUISlider(304, 16, -30, 30, angle, "Tilt"));
     ui_kinect->addWidgetDown(new ofxUIToggle(32, 32, false, "Bar"));
 
+    ui_kinect->addWidgetDown(new ofxUIImage(304, 304, (ofImage*)&colorImg, "colorImg"));
+    ui_kinect->addWidgetDown(new ofxUIImage(304, 304, (ofImage*)&grayImage, "grayImage"));
+
+
     ofAddListener(ui_kinect->newGUIEvent, this, &kinectUIApp::guiEvent);
     ui_kinect->loadSettings("GUI/guiSettingsKinect.xml");
 }
@@ -88,6 +92,8 @@ void kinectUIApp::update(){
     kinect.update();
     // there is a new frame and we are connected
     if(kinect.isFrameNew()) {
+        // load the rgb image
+        colorImg.setFromPixels(kinect.getPixels(), kinect.width, kinect.height);
 
         // load grayscale depth image from the kinect source
         grayImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);

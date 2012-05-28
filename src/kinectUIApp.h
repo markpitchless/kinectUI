@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxUI.h"
+#include "ofxOpenCv.h"
 #include "ofxKinect.h"
 
 
@@ -23,6 +24,7 @@ class kinectUIApp : public ofBaseApp {
         void gotMessage(ofMessage msg);
         void exit();
 
+        void setupKinect();
         void setupUIApp();
         void setupUIKinect();
         void guiEvent(ofxUIEventArgs &ev);
@@ -30,4 +32,17 @@ class kinectUIApp : public ofBaseApp {
         ofxUICanvas *ui_app;
         ofxUICanvas *ui_kinect;
         ofxUIMovingGraph* gui_fps_graph;
+
+        ofxKinect kinect;
+        ofxCvColorImage colorImg;
+        ofxCvGrayscaleImage grayImage; // grayscale depth image
+        ofxCvGrayscaleImage grayThreshNear; // the near thresholded image
+        ofxCvGrayscaleImage grayThreshFar; // the far thresholded image
+        ofxCvContourFinder contourFinder;
+        bool bThreshWithOpenCV;
+        bool bDrawPointCloud;
+        int nearThreshold;
+        int farThreshold;
+        int angle;
+
 };

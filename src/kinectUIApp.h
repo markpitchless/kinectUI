@@ -23,9 +23,9 @@ class kinectUIApp : public ofBaseApp {
         void gotMessage(ofMessage msg);
         void exit();
 
-        void setupUI();
+        void setupUIApp();
         void guiEvent(ofxUIEventArgs &ev);
 
-        ofxUICanvas *gui;
+        ofxUICanvas *ui_app;
         ofxUIMovingGraph* gui_fps_graph;
 };

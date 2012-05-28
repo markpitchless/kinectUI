@@ -2,7 +2,7 @@
 
 //--------------------------------------------------------------
 void kinectUIApp::setup(){
-    setupUI();
+    setupUIApp();
 }
 
 //--------------------------------------------------------------
@@ -10,23 +10,23 @@ void kinectUIApp::update(){
     gui_fps_graph->addPoint(ofGetFrameRate());
 }
 
-void kinectUIApp::setupUI() {
+void kinectUIApp::setupUIApp() {
     float max_fps = 1000;
-    gui = new ofxUICanvas(0,0,320,320);
-    gui->addWidgetDown(new ofxUILabel("KinectUI", OFX_UI_FONT_LARGE));
+    ui_app = new ofxUICanvas(0,0,320,320);
+    ui_app->addWidgetDown(new ofxUILabel("KinectUI", OFX_UI_FONT_LARGE));
 
-    gui->addWidgetDown(new ofxUIFPSSlider(304, 16, 0.0, max_fps, 0, "FPS"));
+    ui_app->addWidgetDown(new ofxUIFPSSlider(304, 16, 0.0, max_fps, 0, "FPS"));
     vector<float> buffer;
     for(int i = 0; i < 256; i++) {
         buffer.push_back(0.0);
     }
-    gui_fps_graph = (ofxUIMovingGraph*) gui->addWidgetDown(
+    gui_fps_graph = (ofxUIMovingGraph*) ui_app->addWidgetDown(
             new ofxUIMovingGraph(304, 64, buffer, buffer.size(), 0, max_fps, "FPS Graph"));
 
-    gui->addWidgetDown(new ofxUISlider(304,16,0.0,255.0,100.0,"BACKGROUND VALUE"));
-    gui->addWidgetDown(new ofxUIToggle(32, 32, false, "FULLSCREEN"));
-    ofAddListener(gui->newGUIEvent, this, &kinectUIApp::guiEvent);
-    gui->loadSettings("GUI/guiSettings.xml");
+    ui_app->addWidgetDown(new ofxUISlider(304,16,0.0,255.0,100.0,"BACKGROUND VALUE"));
+    ui_app->addWidgetDown(new ofxUIToggle(32, 32, false, "FULLSCREEN"));
+    ofAddListener(ui_app->newGUIEvent, this, &kinectUIApp::guiEvent);
+    ui_app->loadSettings("GUI/guiSettings.xml");
 }
 
 void kinectUIApp::guiEvent(ofxUIEventArgs& ev) {
@@ -92,6 +92,6 @@ void kinectUIApp::dragEvent(ofDragInfo dragInfo){
 
 //--------------------------------------------------------------
 void kinectUIApp::exit() {
-    gui->saveSettings("GUI/guiSettings.xml");
-    delete gui;
+    ui_app->saveSettings("GUI/guiSettings.xml");
+    delete ui_app;
 }

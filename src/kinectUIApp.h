@@ -33,6 +33,7 @@ class kinectUIApp : public ofBaseApp {
         ofxUICanvas *ui_kinect;
         ofxUIMovingGraph* gui_fps_graph;
 
+        void setKinectAngle( int n_angle );
         ofxKinect kinect;
         ofxCvColorImage colorImg;
         ofxCvGrayscaleImage grayImage; // grayscale depth image
@@ -44,5 +45,4 @@ class kinectUIApp : public ofBaseApp {
         int nearThreshold;
         int farThreshold;
         int angle;
-
 };

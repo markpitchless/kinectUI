@@ -64,12 +64,22 @@ void kinectUIApp::setupUIKinect() {
     ui_kinect = new ofxUICanvas(326,0,320,320);
     ui_kinect->addWidgetDown(new ofxUILabel("Kinect", OFX_UI_FONT_LARGE));
 
-    ui_kinect->addWidgetDown(new ofxUISlider(304,16,0.0,255.0,100.0,"Foo"));
+    ui_kinect->addWidgetDown(new ofxUISlider(304, 16, -30, 30, angle, "Tilt"));
     ui_kinect->addWidgetDown(new ofxUIToggle(32, 32, false, "Bar"));
 
     ofAddListener(ui_kinect->newGUIEvent, this, &kinectUIApp::guiEvent);
     ui_kinect->loadSettings("GUI/guiSettingsKinect.xml");
 }
+
+
+//--------------------------------------------------------------
+void kinectUIApp::setKinectAngle(int n_angle) {
+    if (n_angle>30)  n_angle=30;
+    if (n_angle<-30) n_angle=-30;
+    angle = n_angle;
+    kinect.setCameraTiltAngle(angle);
+}
+
 
 //--------------------------------------------------------------
 void kinectUIApp::update(){
@@ -122,6 +132,10 @@ void kinectUIApp::guiEvent(ofxUIEventArgs& ev) {
     else if (ev.widget->getName() == "FULLSCREEN") {
         ofxUIToggle *toggle = (ofxUIToggle *) ev.widget;
         ofSetFullscreen(toggle->getValue());
+    }
+    else if (ev.widget->getName() == "Tilt") {
+        ofxUISlider* slider = (ofxUISlider*) ev.widget;
+        setKinectAngle(slider->getScaledValue());
     }
 }
 
@@ -184,3 +198,4 @@ void kinectUIApp::exit() {
     kinect.setCameraTiltAngle(0); // zero the tilt on exit
     kinect.close();
 }
+

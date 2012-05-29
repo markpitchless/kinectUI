@@ -4,6 +4,8 @@
 void kinectUIApp::setup(){
 	ofSetLogLevel(OF_LOG_VERBOSE);
 	ofSetFrameRate(60);
+	ofEnableAlphaBlending();
+	ofEnableSmoothing();
 
     setupUIApp();
 
@@ -63,15 +65,23 @@ void kinectUIApp::setupUIApp() {
 }
 
 void kinectUIApp::setupUIKinect() {
+    int gw = 176;
+    int gh = 20;
     ui_kinect = new ofxUICanvas(10+320+10,10,320,320);
     ui_kinect->addWidgetDown(new ofxUILabel("Kinect", OFX_UI_FONT_LARGE));
 
-    ui_kinect->addWidgetDown(new ofxUISlider(304, 16, -30, 30, angle, "Tilt"));
-	ui_kinect->addWidgetDown(new ofxUIRangeSlider(304, 16, 0.0, 255.0, nearThreshold, farThreshold, "Threshold"));
-    ui_kinect->addWidgetDown(new ofxUIToggle(32, 32, false, "Bar"));
+    string id_str = "ID: " + ofToString(kinect.getDeviceId()) + " " + kinect.getSerial();
+    ui_device_id_label = (ofxUILabel*) ui_kinect->addWidgetDown(
+            new ofxUILabel(id_str, OFX_UI_FONT_SMALL));
+
+    ui_kinect->addWidgetDown(new ofxUISlider(gw, gh, -30, 30, angle, "Tilt"));
+    // IDEA: Use getTargetCameraTitlAngle with a slider to show movement.
+    ui_kinect->addWidgetDown(new ofxUIToggle(gh, gh, false, "Flip"));
+    ui_kinect->addWidgetDown(new ofxUIToggle(gh, gh, kinect.isDepthNearValueWhite(), "Depth Near White"));
 
     ui_kinect->addWidgetDown(new ofxUIImage(160, 120, (ofImage*)&colorImg, "colorImg"));
     ui_kinect->addWidgetDown(new ofxUIImage(160, 120, (ofImage*)&depthImage, "depthImage"));
+	ui_kinect->addWidgetDown(new ofxUIRangeSlider(gw, gh, 0.0, 255.0, nearThreshold, farThreshold, "Threshold"));
     ui_kinect->addWidgetDown(new ofxUIImage(160, 120, (ofImage*)&grayImage, "grayImage"));
 
     ui_kinect->autoSizeToFitWidgets();
@@ -151,6 +161,7 @@ void kinectUIApp::update(){
 }
 
 void kinectUIApp::guiEvent(ofxUIEventArgs& ev) {
+    string name = ev.widget->getName();
     if (ev.widget->getName() == "BACKGROUND VALUE") {
         ofxUISlider *slider = (ofxUISlider *) ev.widget;
         ofBackground(slider->getScaledValue());
@@ -167,6 +178,10 @@ void kinectUIApp::guiEvent(ofxUIEventArgs& ev) {
         ofxUIRangeSlider* slider = (ofxUIRangeSlider*) ev.widget;
         setFarThreshold(slider->getScaledValueLow());
         setNearThreshold(slider->getScaledValueHigh());
+    }
+    else if(name == "Depth Near White") {
+        ofxUIButton *button = (ofxUIButton *) ev.widget;
+        kinect.enableDepthNearValueWhite(button->getValue());
     }
 }
 

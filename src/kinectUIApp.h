@@ -32,6 +32,7 @@ class kinectUIApp : public ofBaseApp {
         ofxUICanvas *ui_app;
         ofxUICanvas *ui_kinect;
         ofxUIMovingGraph* gui_fps_graph;
+        ofxUILabel* ui_device_id_label;
 
         void setKinectAngle( int n_angle );
         void setNearThreshold( int n );

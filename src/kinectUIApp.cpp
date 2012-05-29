@@ -2,6 +2,7 @@
 
 //--------------------------------------------------------------
 void kinectUIApp::setup(){
+    ofSetWindowTitle("kinectUI");
 	ofSetLogLevel(OF_LOG_VERBOSE);
 	ofSetFrameRate(60);
 	ofEnableAlphaBlending();

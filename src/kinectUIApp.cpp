@@ -10,6 +10,7 @@ void kinectUIApp::setup(){
 
     setupUIApp();
 
+    flip_kinect = false;
     setupKinect();
     setupUIKinect();
 }
@@ -77,7 +78,7 @@ void kinectUIApp::setupUIKinect() {
 
     ui_kinect->addWidgetDown(new ofxUISlider(gw, gh, -30, 30, angle, "Tilt"));
     // IDEA: Use getTargetCameraTitlAngle with a slider to show movement.
-    ui_kinect->addWidgetDown(new ofxUIToggle(gh, gh, false, "Flip"));
+    ui_kinect->addWidgetDown(new ofxUIToggle(gh, gh, flip_kinect, "H Flip"));
     ui_kinect->addWidgetDown(new ofxUIToggle(gh, gh, kinect.isDepthNearValueWhite(), "Depth Near White"));
 
     ui_kinect->addWidgetDown(new ofxUIImage(160, 120, (ofImage*)&colorImg, "colorImg"));
@@ -123,10 +124,13 @@ void kinectUIApp::update(){
     if(kinect.isFrameNew()) {
         // load the rgb image
         colorImg.setFromPixels(kinect.getPixels(), kinect.width, kinect.height);
+        if (flip_kinect)
+            colorImg.mirror(false,true);
 
         // load grayscale depth image from the kinect source
         depthImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
-        //grayImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
+        if (flip_kinect)
+            depthImage.mirror(false,true);
         grayImage = depthImage;
 
         // we do two thresholds - one for the far plane and one for the near plane
@@ -183,6 +187,10 @@ void kinectUIApp::guiEvent(ofxUIEventArgs& ev) {
     else if(name == "Depth Near White") {
         ofxUIButton *button = (ofxUIButton *) ev.widget;
         kinect.enableDepthNearValueWhite(button->getValue());
+    }
+    else if(name == "H Flip") {
+        ofxUIButton *button = (ofxUIButton *) ev.widget;
+        flip_kinect = button->getValue();
     }
 }
 

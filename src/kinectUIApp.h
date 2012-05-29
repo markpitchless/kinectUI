@@ -39,7 +39,8 @@ class kinectUIApp : public ofBaseApp {
         void drawPointCloud();
         ofxKinect kinect;
         ofxCvColorImage colorImg;
-        ofxCvGrayscaleImage grayImage;      // grayscale depth image
+        ofxCvGrayscaleImage depthImage;// grayscale depth image
+        ofxCvGrayscaleImage grayImage; // grayscale depth image after threshold
         ofxCvGrayscaleImage grayThreshNear; // the near thresholded image
         ofxCvGrayscaleImage grayThreshFar;  // the far thresholded image
         ofxCvContourFinder contourFinder;

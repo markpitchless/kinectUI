@@ -25,6 +25,7 @@ void kinectUIApp::setupKinect() {
 	//kinect.open("A00362A08602047A");	// open a kinect using it's unique serial #
 
 	colorImg.allocate(kinect.width, kinect.height);
+	depthImage.allocate(kinect.width, kinect.height);
 	grayImage.allocate(kinect.width, kinect.height);
 	grayThreshNear.allocate(kinect.width, kinect.height);
 	grayThreshFar.allocate(kinect.width, kinect.height);
@@ -69,8 +70,9 @@ void kinectUIApp::setupUIKinect() {
 	ui_kinect->addWidgetDown(new ofxUIRangeSlider(304, 16, 0.0, 255.0, nearThreshold, farThreshold, "Threshold"));
     ui_kinect->addWidgetDown(new ofxUIToggle(32, 32, false, "Bar"));
 
-    ui_kinect->addWidgetDown(new ofxUIImage(320, 240, (ofImage*)&colorImg, "colorImg"));
-    ui_kinect->addWidgetDown(new ofxUIImage(320, 240, (ofImage*)&grayImage, "grayImage"));
+    ui_kinect->addWidgetDown(new ofxUIImage(160, 120, (ofImage*)&colorImg, "colorImg"));
+    ui_kinect->addWidgetDown(new ofxUIImage(160, 120, (ofImage*)&depthImage, "depthImage"));
+    ui_kinect->addWidgetDown(new ofxUIImage(160, 120, (ofImage*)&grayImage, "grayImage"));
 
     ui_kinect->autoSizeToFitWidgets();
     ofAddListener(ui_kinect->newGUIEvent, this, &kinectUIApp::guiEvent);
@@ -112,7 +114,9 @@ void kinectUIApp::update(){
         colorImg.setFromPixels(kinect.getPixels(), kinect.width, kinect.height);
 
         // load grayscale depth image from the kinect source
-        grayImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
+        depthImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
+        //grayImage.setFromPixels(kinect.getDepthPixels(), kinect.width, kinect.height);
+        grayImage = depthImage;
 
         // we do two thresholds - one for the far plane and one for the near plane
         // we then do a cvAnd to get the pixels which are a union of the two thresholds

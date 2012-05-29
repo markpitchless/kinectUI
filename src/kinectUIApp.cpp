@@ -229,7 +229,12 @@ void kinectUIApp::drawPointCloud() {
 
 //--------------------------------------------------------------
 void kinectUIApp::keyPressed(int key){
-
+    switch(key) {
+        case '\t':
+            ui_app->toggleVisible();
+            ui_kinect->toggleVisible();
+        break;
+    }
 }
 
 //--------------------------------------------------------------

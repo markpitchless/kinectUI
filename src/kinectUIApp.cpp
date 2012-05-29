@@ -11,6 +11,7 @@ void kinectUIApp::setup(){
     setupUIKinect();
 }
 
+
 void kinectUIApp::setupKinect() {
 	// enable depth->video image calibration
 	kinect.setRegistration(true);
@@ -167,8 +168,36 @@ void kinectUIApp::guiEvent(ofxUIEventArgs& ev) {
 
 //--------------------------------------------------------------
 void kinectUIApp::draw(){
-
+    easyCam.begin();
+    drawPointCloud();
+    easyCam.end();
 }
+
+void kinectUIApp::drawPointCloud() {
+    int w = 640;
+    int h = 480;
+    ofMesh mesh;
+    mesh.setMode(OF_PRIMITIVE_POINTS);
+    int step = 2;
+    for(int y = 0; y < h; y += step) {
+        for(int x = 0; x < w; x += step) {
+            if(kinect.getDistanceAt(x, y) > 0) {
+                mesh.addColor(kinect.getColorAt(x,y));
+                mesh.addVertex(kinect.getWorldCoordinateAt(x, y));
+            }
+        }
+    }
+    glPointSize(3);
+    ofPushMatrix();
+    // the projected points are 'upside down' and 'backwards'
+    ofScale(1, -1, -1);
+    ofTranslate(0, 0, -1000); // center the points a bit
+    glEnable(GL_DEPTH_TEST);
+    mesh.drawVertices();
+    glDisable(GL_DEPTH_TEST);
+    ofPopMatrix();
+}
+
 
 //--------------------------------------------------------------
 void kinectUIApp::keyPressed(int key){
@@ -224,4 +253,5 @@ void kinectUIApp::exit() {
     kinect.setCameraTiltAngle(0); // zero the tilt on exit
     kinect.close();
 }
+
 

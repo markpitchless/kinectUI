@@ -36,6 +36,7 @@ class kinectUIApp : public ofBaseApp {
         void setKinectAngle( int n_angle );
         void setNearThreshold( int n );
         void setFarThreshold( int n);
+        void drawPointCloud();
         ofxKinect kinect;
         ofxCvColorImage colorImg;
         ofxCvGrayscaleImage grayImage;      // grayscale depth image
@@ -47,4 +48,6 @@ class kinectUIApp : public ofBaseApp {
         int nearThreshold;
         int farThreshold;
         int angle;
+        // used for viewing the point cloud
+        ofEasyCam easyCam;
 };

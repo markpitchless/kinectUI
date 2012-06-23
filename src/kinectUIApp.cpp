@@ -47,19 +47,20 @@ void kinectUIApp::setupKinect() {
 }
 
 void kinectUIApp::setupUIApp() {
+    int gw = 176;
     float max_fps = 1000;
-    ui_app = new ofxUICanvas(10,10,320,320);
+    ui_app = new ofxUICanvas(10,10,gw+20,320);
     ui_app->addWidgetDown(new ofxUILabel("KinectUI", OFX_UI_FONT_LARGE));
 
-    ui_app->addWidgetDown(new ofxUIFPSSlider(304, 16, 0.0, max_fps, 0, "FPS"));
+    ui_app->addWidgetDown(new ofxUIFPSSlider(gw, 16, 0.0, max_fps, 0, "FPS"));
     vector<float> buffer;
     for(int i = 0; i < 256; i++) {
         buffer.push_back(0.0);
     }
     gui_fps_graph = (ofxUIMovingGraph*) ui_app->addWidgetDown(
-            new ofxUIMovingGraph(304, 64, buffer, buffer.size(), 0, max_fps, "FPS Graph"));
+            new ofxUIMovingGraph(gw, 64, buffer, buffer.size(), 0, max_fps, "FPS Graph"));
 
-    ui_app->addWidgetDown(new ofxUISlider(304,16,0.0,255.0,100.0,"BACKGROUND VALUE"));
+    ui_app->addWidgetDown(new ofxUISlider(gw,16,0.0,255.0,100.0,"BACKGROUND VALUE"));
     ui_app->addWidgetDown(new ofxUIToggle(32, 32, false, "FULLSCREEN"));
 
     ofAddListener(ui_app->newGUIEvent, this, &kinectUIApp::guiEvent);
@@ -69,7 +70,7 @@ void kinectUIApp::setupUIApp() {
 void kinectUIApp::setupUIKinect() {
     int gw = 176;
     int gh = 20;
-    ui_kinect = new ofxUICanvas(10+320+10,10,320,320);
+    ui_kinect = new ofxUICanvas(10+176+20+10,10,320,320);
     ui_kinect->addWidgetDown(new ofxUILabel("Kinect", OFX_UI_FONT_LARGE));
 
     string id_str = "ID: " + ofToString(kinect.getDeviceId()) + " " + kinect.getSerial();
